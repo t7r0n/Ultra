@@ -52,7 +52,7 @@ class VLLMEngine:
             seed=sampling.seed,
         )
         if structured and structured.get("json_schema") is not None:
-            params.guided_json = structured["json_schema"]
+            params.guided_json = structured.get("json_schema")
         outputs = llm.generate([prompt], params)
         completion = outputs[0].outputs[0]
         logprobs = None
