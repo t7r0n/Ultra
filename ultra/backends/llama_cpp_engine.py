@@ -45,11 +45,16 @@ class LlamaCPPEngine:
     ) -> Completion:
         model_path = self._resolve_model(inspection)
         llm = self._load(model_path)
+        # Pass supported SamplingParameters fields to llama_cpp
         response = llm(
             prompt,
             max_tokens=sampling.max_new_tokens,
             temperature=sampling.temperature,
             top_p=sampling.top_p,
+            top_k=getattr(sampling, "top_k", None),
+            repetition_penalty=getattr(sampling, "repetition_penalty", None),
+            seed=getattr(sampling, "seed", None),
+            stop=getattr(sampling, "stop", None),
         )
         choice = response["choices"][0]
         text = choice["text"]
