@@ -121,7 +121,7 @@ def chat(
         selection=selection_result,
         final=refined,
     )
-    payload = structured.enforce_structure(inspection=inspection, profile=profile, candidate=selection_result.candidate)
+    payload = structured.enforce_structure(inspection=inspection, profile=profile, candidate=refined)
     if profile.structured_output.enabled:
         _echo_json(payload)
     else:
