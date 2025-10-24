@@ -234,9 +234,10 @@ def inspect_model(model_ref: str, preferred_backend: str = "auto") -> Inspection
     system_prompt_hint = _system_prompt_hint(config, generation_config)
     dtype_candidates = _dtype_candidates(config)
     backends_supported = _detect_backends(path, preferred_backend)
+    all_files = list(path.rglob("*"))
     metadata = {
-        "files": sorted(str(p.relative_to(path)) for p in path.rglob("*")),
-        "rope_scaling_note": "gguf_auto" if any(p.suffix == ".gguf" for p in path.rglob("*.gguf")) else None,
+        "files": sorted(str(p.relative_to(path)) for p in all_files),
+        "rope_scaling_note": "gguf_auto" if any(p.suffix == ".gguf" for p in all_files) else None,
     }
 
     chat_template = tokenizer_config.get("chat_template", "")
