@@ -49,9 +49,35 @@ def _json_verifier(candidate: str) -> VerificationResult:
 
 
 def _run_pytest(candidate: str, *, workdir: Path, timeout: int = 30) -> VerificationResult:
+    # Validate that workdir is an absolute path and is within a safe sandbox directory
+    safe_sandbox_root = Path("/tmp")  # You may want to make this configurable
+    try:
+        workdir_abs = workdir.resolve()
+        if not str(workdir_abs).startswith(str(safe_sandbox_root.resolve())):
+            return VerificationResult(
+                name="pytest",
+                passed=False,
+                details={"error": f"Unsafe workdir: {workdir_abs} is not within {safe_sandbox_root}"},
+            )
+    except Exception as exc:
+        return VerificationResult(
+            name="pytest",
+            passed=False,
+            details={"error": f"Failed to resolve workdir: {exc}"},
+        )
+
+    # Basic candidate content check (optional, can be extended)
+    dangerous_keywords = ["os.system", "subprocess", "open(", "__import__", "eval(", "exec("]
+    for keyword in dangerous_keywords:
+        if keyword in candidate:
+            return VerificationResult(
+                name="pytest",
+                passed=False,
+                details={"error": f"Candidate contains dangerous keyword: {keyword}"},
+            )
+
     test_file = workdir / "candidate_solution.py"
     test_file.write_text(candidate)
-    try:
         result = subprocess.run(  # pragma: no cover - external process
             ["pytest", str(test_file)],
             cwd=str(workdir),
