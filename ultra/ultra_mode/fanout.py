@@ -282,7 +282,8 @@ def generate_candidates(
     n_candidates = min(profile.ultra.n_candidates, profile.ultra.max_n_candidates)
     temperature_iter = _cycle(profile.ultra.temperatures or [0.7])
     top_p_iter = _cycle(profile.ultra.top_p or [0.95])
-    style_iter = _cycle(profile.ultra.styles or [None])
+    styles = [s for s in (profile.ultra.styles or []) if s]
+    style_iter = _cycle(styles if styles else [None])
 
     structured_payload: Optional[Dict[str, Any]] = None
     if profile.structured_output.enabled:
