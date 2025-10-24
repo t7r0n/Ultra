@@ -119,9 +119,13 @@ def estimate_memory(
     if backend_lower == "auto":
         backend_lower = inspection.backends_supported[0] if inspection.backends_supported else "hf"
     if backend_lower == "vllm":
+        # Inflate kv_total to account for vLLM's gpu_memory_utilization setting,
+        # which limits the fraction of GPU memory available for allocation.
         kv_total = int(math.ceil(kv_total / DEFAULT_VLLM_UTILIZATION))
-        notes.append(f"vllm_gpu_memory_utilization={DEFAULT_VLLM_UTILIZATION}")
-
+        notes.append(
+            f"kv_total inflated by dividing by vLLM gpu_memory_utilization ({DEFAULT_VLLM_UTILIZATION}) "
+            "to account for only a fraction of GPU memory being available for allocation."
+        )
     total_estimated = weight_bytes + kv_total
 
     system_report = hwcheck.collect_system_report()
