@@ -1,0 +1,7 @@
+{
+  "model_max_length": 32768,
+  "chat_template": "{% for message in messages %}{% if message['role'] == 'system' %}<<SYS>>{{ message['content'] }}<</SYS>>{% elif message['role'] == 'user' %}{{ '<|user|>\n' + message['content'] + '\n' }}{% elif message['role'] == 'assistant' %}{{ '<|assistant|>\n' + message['content'] + '\n' }}{% endif %}{% endfor %}<|assistant|>",
+  "eos_token": "<|im_end|>",
+  "pad_token": "<|pad|>",
+  "additional_special_tokens": ["<|im_start|>", "<|im_end|>"]
+}
