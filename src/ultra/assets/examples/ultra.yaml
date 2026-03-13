@@ -1,0 +1,39 @@
+backend: auto
+precision: auto
+context_window: auto
+ultra:
+  n_candidates: 8
+  max_n_candidates: 32
+  diversity:
+    temperatures: [0.2, 0.6, 0.9]
+    top_p: [0.85, 0.95]
+    styles: ["concise", "cot"]
+  selection:
+    self_consistency: true
+    mbr: true
+    logprobs: true
+  refine:
+    self_refine_passes: 1
+    chain_of_verification: true
+structured_output:
+  enabled: false
+  json_schema: null
+  regex: null
+  grammar: null
+long_context:
+  allow_rope_scaling: true
+  mistral_respect_swa: true
+judge:
+  enabled: false
+  model_ref: null
+  backend: auto
+  top_k: 4
+  pairwise: true
+  weight: 0.35
+  bias_mitigation:
+    shuffle: true
+    blind_ids: true
+logging:
+  save_prompts: true
+  save_candidates: true
+  save_logits: false

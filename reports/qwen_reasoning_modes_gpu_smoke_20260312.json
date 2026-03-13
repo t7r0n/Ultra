@@ -1,0 +1,174 @@
+{
+  "aggregate": {
+    "mean_accuracy": {
+      "oracle_best_of_k": 0.0,
+      "single_pass": 0.0,
+      "ultra_fanout": 0.0
+    },
+    "mean_category_accuracy": {
+      "math": {
+        "oracle_best_of_k": 0.0,
+        "single_pass": 0.0,
+        "ultra_fanout": 0.0
+      }
+    },
+    "mean_timing_ratio": {
+      "ultra_vs_single_generation_time": 0.9809396624984825
+    }
+  },
+  "conditions": [
+    {
+      "condition": {
+        "code_min_p": null,
+        "code_repetition_penalty": null,
+        "code_temperature": null,
+        "code_top_k": null,
+        "code_top_p": null,
+        "family": "qwen3",
+        "label": "qwen3_1.7b_thinking",
+        "model_id": "Qwen/Qwen3-1.7B",
+        "text_min_p": 0.0,
+        "text_repetition_penalty": 1.0,
+        "text_temperature": 0.6,
+        "text_top_k": 20,
+        "text_top_p": 0.95,
+        "thinking": true
+      },
+      "summary": {
+        "accuracy": {
+          "oracle_best_of_k": 0.0,
+          "single_pass": 0.0,
+          "ultra_fanout": 0.0
+        },
+        "avg_selected_generated_tokens": 256.0,
+        "category_accuracy": {
+          "math": {
+            "oracle_best_of_k": 0.0,
+            "single_pass": 0.0,
+            "ultra_fanout": 0.0
+          }
+        },
+        "category_generation_time_s": {
+          "math": {
+            "single_pass": 17.29765997999857,
+            "ultra_fanout": 16.967990609999106
+          }
+        },
+        "selected_answer_stage_reached_rate": 0.0,
+        "selected_fallback_answer_rate": 1.0,
+        "selected_structured_answer_rate": 0.0,
+        "selected_think_block_rate": 1.0,
+        "selected_think_closed_rate": 0.0,
+        "selected_truncated_inside_think_rate": 1.0
+      },
+      "tasks": [
+        {
+          "answer": "22",
+          "category": "math",
+          "single_pass": {
+            "canonical_answer": "708",
+            "cleaned_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. Hmm, I need to find the number of child tickets.\n\nLet me start by setting up some variables. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So, that gives me the equation:\n\na + c = 52\n\nAnd the total amount of money collected is $708. Since adult tickets are $17 each and child tickets are $9 each, the equation for the total revenue would be:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1. a + c = 52\n2. 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets. Let me think about how to solve this. The first equation can be used to express one variable in terms of the other",
+            "generated_tokens": 256,
+            "latency_s": 17.2977,
+            "meta": {
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.04573429375886917,
+              "canonical_source": "fallback_last_number",
+              "normalized_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. Hmm, I need to find the number of child tickets.\n\nLet me start by setting up some variables. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So, that gives me the equation:\n\na + c = 52\n\nAnd the total amount of money collected is $708. Since adult tickets are $17 each and child tickets are $9 each, the equation for the total revenue would be:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1. a + c = 52\n2. 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets. Let me think about how to solve this. The first equation can be used to express one variable in terms of the other",
+              "reasoning_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. Hmm, I need to find the number of child tickets.\n\nLet me start by setting up some variables. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So, that gives me the equation:\n\na + c = 52\n\nAnd the total amount of money collected is $708. Since adult tickets are $17 each and child tickets are $9 each, the equation for the total revenue would be:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1. a + c = 52\n2. 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets. Let me think about how to solve this. The first equation can be used to express one variable in terms of the other",
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. Hmm, I need to find the number of child tickets.\n\nLet me start by setting up some variables. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So, that gives me the equation:\n\na + c = 52\n\nAnd the total amount of money collected is $708. Since adult tickets are $17 each and child tickets are $9 each, the equation for the total revenue would be:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1. a + c = 52\n2. 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets. Let me think about how to solve this. The first equation can be used to express one variable in terms of the other",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "task_id": "math_tickets",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "52",
+              "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "generated_tokens": 256,
+              "latency_s": 16.968,
+              "meta": {
+                "answer_stage_reached": false,
+                "answer_text": "",
+                "avg_logprob": -0.031517788767814636,
+                "candidate_index": 0,
+                "canonical_source": "fallback_last_number",
+                "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+                "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": true
+              },
+              "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "score": 0.0,
+              "think_block_present": true
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": "52",
+            "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+            "generated_tokens": 256,
+            "latency_s": 16.968,
+            "meta": {
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.031517788767814636,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "ultra_selected": {
+            "canonical_answer": "52",
+            "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+            "generated_tokens": 256,
+            "latency_s": 16.968,
+            "meta": {
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.031517788767814636,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let a be the number of adult tickets and c be the number of child tickets. Then, according to the problem, the total number of tickets is 52. So that would be:\n\na + c = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, the revenue from adults is 17a, and child tickets are 9c, so:\n\n17a + 9c = 708\n\nSo now I have a system of two equations:\n\n1) a + c = 52\n\n2) 17a + 9c = 708\n\nI need to solve this system to find the value of c, which is the number of child tickets.\n\nLet me solve the first equation for a. So, a = 52 - c. Then substitute",
+            "score": 0.0,
+            "think_block_present": true
+          }
+        }
+      ],
+      "timings": {
+        "model_load_s": 4.0549,
+        "tokenizer_load_s": 1.4334
+      }
+    }
+  ],
+  "device": "cuda",
+  "dtype": "fp16",
+  "generated_at": "2026-03-12T21:02:42Z",
+  "n_candidates": 1,
+  "single_token_multiplier": 1.0,
+  "tasks_run": [
+    "math_tickets"
+  ],
+  "thinking_token_multiplier": 1.0
+}

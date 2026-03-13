@@ -1,0 +1,2290 @@
+{
+  "aggregate": {
+    "category_accuracy_mean": {
+      "code": {
+        "baseline_greedy": 0.75,
+        "ultra_scaffold": 1.0
+      },
+      "json": {
+        "baseline_greedy": 0.5,
+        "ultra_scaffold": 0.5
+      },
+      "logic": {
+        "baseline_greedy": 0.3333333333333333,
+        "ultra_scaffold": 0.3333333333333333
+      },
+      "math": {
+        "baseline_greedy": 0.16666666666666666,
+        "ultra_scaffold": 0.16666666666666666
+      }
+    },
+    "strategy_accuracy_mean": {
+      "baseline_greedy": 0.4,
+      "ultra_scaffold": 0.44999999999999996
+    }
+  },
+  "device": "cpu",
+  "generated_at": "2026-03-12T15:09:17Z",
+  "hf_home": "/tmp/hf_home",
+  "models": [
+    {
+      "estimate": {
+        "assumptions": [
+          "ctx is treated as prompt_len + avg_generated for the KV estimate.",
+          "GQA uses num_key_value_heads when provided."
+        ],
+        "backend": "hf",
+        "batch": 1,
+        "bytes_per_value": 4,
+        "ctx": 2048,
+        "estimated_total_bytes": null,
+        "kv_bytes_per_token": 24576,
+        "model_ref": "Qwen/Qwen2.5-0.5B-Instruct",
+        "precision": "fp32",
+        "total_kv_bytes": 50331648,
+        "weights_bytes": null
+      },
+      "fanout_plan": {
+        "n_candidates": 5,
+        "styles": [
+          "concise",
+          "cot"
+        ],
+        "temperatures": [
+          0.2,
+          0.6,
+          0.9
+        ],
+        "top_p": [
+          0.85,
+          0.95
+        ],
+        "ultra_profile": "default"
+      },
+      "inspection": {
+        "arch": "Qwen2ForCausalLM",
+        "backends_supported": [
+          "hf",
+          "vllm",
+          "sglang"
+        ],
+        "chat_template": "{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- messages[0]['content'] }}\n    {%- else %}\n        {{- 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.' }}\n    {%- endif %}\n    {{- \"\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0]['content'] + '<|im_end|>\\n' }}\n    {%- else %}\n        {{- '<|im_start|>system\\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) or (message.role == \"assistant\" and not message.tool_calls) %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {{- '<|im_start|>' + message.role }}\n        {%- if message.content %}\n            {{- '\\n' + message.content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- '\\n<tool_call>\\n{\"name\": \"' }}\n            {{- tool_call.name }}\n            {{- '\", \"arguments\": ' }}\n            {{- tool_call.arguments | tojson }}\n            {{- '}\\n</tool_call>' }}\n        {%- endfor %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n{%- endif %}\n",
+        "context_window": 32768,
+        "dtype_candidates": [
+          "bfloat16"
+        ],
+        "eos_tokens": [
+          "151645",
+          "151643",
+          "<|im_end|>"
+        ],
+        "head_dim": 64,
+        "hidden_size": 896,
+        "n_heads": 14,
+        "n_kv_heads": 2,
+        "n_layers": 24,
+        "rope_scaling": null,
+        "sliding_window": 32768,
+        "stop_tokens": [],
+        "system_prompt_hint": "chat template includes system role",
+        "tokenizer_info": {
+          "bos_token": null,
+          "eos_token": "<|im_end|>",
+          "model_max_length": 131072,
+          "tokenizer_class": "Qwen2Tokenizer"
+        },
+        "vision_support": false
+      },
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "summary": {
+        "category_accuracy": {
+          "code": {
+            "baseline_greedy": 0.5,
+            "ultra_scaffold": 1.0
+          },
+          "json": {
+            "baseline_greedy": 0.5,
+            "ultra_scaffold": 0.5
+          },
+          "logic": {
+            "baseline_greedy": 0.0,
+            "ultra_scaffold": 0.0
+          },
+          "math": {
+            "baseline_greedy": 0.0,
+            "ultra_scaffold": 0.0
+          }
+        },
+        "strategy_accuracy": {
+          "baseline_greedy": 0.2,
+          "ultra_scaffold": 0.3
+        }
+      },
+      "tasks": [
+        {
+          "answer": "36",
+          "baseline": {
+            "canonical_answer": "46",
+            "latency_s": 0.4257,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "46",
+            "score": 0.0
+          },
+          "category": "math",
+          "task_id": "math_bookstore",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "46",
+              "latency_s": 0.4519,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "46",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "46",
+              "latency_s": 0.7923,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 46",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "46",
+              "latency_s": 0.4205,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "46",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "46",
+              "latency_s": 0.7477,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 46",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "46",
+              "latency_s": 0.4074,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "46",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "46",
+            "latency_s": 0.4519,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "46",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "60",
+          "baseline": {
+            "canonical_answer": "158",
+            "latency_s": 0.4769,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "158",
+            "score": 0.0
+          },
+          "category": "math",
+          "task_id": "math_train",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "158",
+              "latency_s": 0.4987,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "158",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "30",
+              "latency_s": 0.8248,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 30olie",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "158",
+              "latency_s": 0.5384,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "158",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "168",
+              "latency_s": 0.9822,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 168",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "158",
+              "latency_s": 0.5947,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "158",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "158",
+            "latency_s": 0.4987,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "158",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "30",
+          "baseline": {
+            "canonical_answer": "26",
+            "latency_s": 0.4327,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "26",
+            "score": 0.0
+          },
+          "category": "math",
+          "task_id": "math_baker",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "26",
+              "latency_s": 0.4511,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "26",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "36",
+              "latency_s": 0.8087,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 36",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "26",
+              "latency_s": 0.4369,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "26",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "30",
+              "latency_s": 0.7279,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: 30",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "26",
+              "latency_s": 0.4222,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "26",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "26",
+            "latency_s": 0.4511,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "26",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "B",
+          "baseline": {
+            "canonical_answer": "D",
+            "latency_s": 0.4135,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "D",
+            "score": 0.0
+          },
+          "category": "logic",
+          "task_id": "logic_syllogism",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "D",
+              "latency_s": 0.4231,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "D",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 1.4381,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "D) Some lazies are not razzies.",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.161,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "B) All bloops are lazies.",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 1.3738,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "D) Some lazies are not razzies.",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 0.4231,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "D",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "D",
+            "latency_s": 0.4231,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "D",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "C",
+          "baseline": {
+            "canonical_answer": "A",
+            "latency_s": 0.475,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "A) Emma",
+            "score": 0.0
+          },
+          "category": "logic",
+          "task_id": "logic_height",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "A",
+              "latency_s": 0.5194,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "A) Emma",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 0.7838,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "D) Cannot tell.",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "A",
+              "latency_s": 0.5063,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "A) Emma",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 0.7935,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "D) Cannot tell.",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "A",
+              "latency_s": 0.3276,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "A",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "A",
+            "latency_s": 0.5194,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "A) Emma",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "A",
+          "baseline": {
+            "canonical_answer": "C",
+            "latency_s": 0.3552,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "C",
+            "score": 0.0
+          },
+          "category": "logic",
+          "task_id": "logic_calendar",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "C",
+              "latency_s": 0.3692,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "C",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "D",
+              "latency_s": 0.5977,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "D) Monday",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 0.3432,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 0.5746,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "FINAL: B",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "C",
+              "latency_s": 0.3218,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "C",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "C",
+            "latency_s": 0.3692,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "C",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": {
+            "city": "Austin",
+            "customer": "Maya Chen",
+            "item": "lamps",
+            "quantity": 3,
+            "total": 84
+          },
+          "baseline": {
+            "canonical_answer": {
+              "customer": {
+                "city": "Austin",
+                "name": "Maya Chen"
+              },
+              "item": {
+                "name": "lamps"
+              },
+              "quantity": 3,
+              "total": 252
+            },
+            "latency_s": 5.2161,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": {\n    \"name\": \"lamps\"\n  },\n  \"quantity\": 3,\n  \"total\": 252\n}\n```",
+            "score": 0.0
+          },
+          "category": "json",
+          "task_id": "json_customer",
+          "ultra_candidates": [
+            {
+              "canonical_answer": {
+                "customer": {
+                  "city": "Austin",
+                  "name": "Maya Chen"
+                },
+                "item": {
+                  "name": "lamps"
+                },
+                "quantity": 3,
+                "total": 252
+              },
+              "latency_s": 5.7923,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": {\n    \"name\": \"lamps\"\n  },\n  \"quantity\": 3,\n  \"total\": 252\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "customer": {
+                  "city": "Austin",
+                  "name": "Maya Chen"
+                },
+                "item": {
+                  "name": "Lamps"
+                },
+                "quantity": 3,
+                "total": 252
+              },
+              "latency_s": 5.8053,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": {\n    \"name\": \"Lamps\"\n  },\n  \"quantity\": 3,\n  \"total\": 252\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "customer": {
+                  "city": "Austin",
+                  "name": "Maya Chen"
+                },
+                "item": [
+                  "lamp"
+                ],
+                "quantity": {
+                  "number": 3
+                },
+                "total": {
+                  "amount": "$84"
+                }
+              },
+              "latency_s": 6.7475,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": [\n    \"lamp\"\n  ],\n  \"quantity\": {\n    \"number\": 3\n  },\n  \"total\": {\n    \"amount\": \"$84\"\n  }\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "customer": {
+                  "city": "Austin",
+                  "name": "Maya Chen"
+                },
+                "item": [
+                  {
+                    "name": "lamp"
+                  }
+                ],
+                "quantity": 3,
+                "total": 252
+              },
+              "latency_s": 6.1139,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": [\n    {\n      \"name\": \"lamp\"\n    }\n  ],\n  \"quantity\": 3,\n  \"total\": 252\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 4.4197,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": {
+              "customer": {
+                "city": "Austin",
+                "name": "Maya Chen"
+              },
+              "item": {
+                "name": "lamps"
+              },
+              "quantity": 3,
+              "total": 252
+            },
+            "latency_s": 5.7923,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "```json\n{\n  \"customer\": {\n    \"name\": \"Maya Chen\",\n    \"city\": \"Austin\"\n  },\n  \"item\": {\n    \"name\": \"lamps\"\n  },\n  \"quantity\": 3,\n  \"total\": 252\n}\n```",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": {
+            "assignee": "Omar",
+            "priority": "high",
+            "status": "open",
+            "ticket_id": "A19"
+          },
+          "baseline": {
+            "canonical_answer": {
+              "assignee": "Omar",
+              "priority": "high",
+              "status": "open",
+              "ticket_id": "A19"
+            },
+            "latency_s": 3.4961,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+            "score": 1.0
+          },
+          "category": "json",
+          "task_id": "json_ticket",
+          "ultra_candidates": [
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 3.8592,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 3.9848,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 3.9139,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 3.8841,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 3.8934,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": {
+              "assignee": "Omar",
+              "priority": "high",
+              "status": "open",
+              "ticket_id": "A19"
+            },
+            "latency_s": 3.8592,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": {
+            "function_name": "square_evens",
+            "tests": [
+              "assert square_evens([1, 2, 3, 4]) == [4, 16]",
+              "assert square_evens([]) == []",
+              "assert square_evens([2, 2, 5]) == [4, 4]"
+            ]
+          },
+          "baseline": {
+            "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([10, -2, 3, 5]))  # Output: [100, 4]",
+            "latency_s": 8.0481,
+            "meta": {
+              "strategy": "baseline_greedy",
+              "tests_passed": 3,
+              "tests_total": 3
+            },
+            "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([10, -2, 3, 5]))  # Output: [100, 4]\n```",
+            "score": 1.0
+          },
+          "category": "code",
+          "task_id": "code_square_evens",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]",
+              "latency_s": 6.8227,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: List of squares of even integers\n    \"\"\"\n    return [x**2 for x in values if x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9, 16]",
+              "latency_s": 13.5954,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: List of squares of even integers\n    \"\"\"\n    return [x**2 for x in values if x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9, 16]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]",
+              "latency_s": 6.0019,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9]",
+              "latency_s": 9.0684,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x ** 2 for x in values if x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9]",
+              "latency_s": 6.4141,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x ** 2 for x in values if x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4, 5]))  # Output: [1, 4, 9]\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]",
+            "latency_s": 6.0019,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.9,
+              "tests_passed": 3,
+              "tests_total": 3,
+              "top_p": 0.85
+            },
+            "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if isinstance(x, int) and x % 2 == 0]\n\n# Example usage:\nprint(square_evens([1, 2, 3, 4]))  # Output: [1, 4]\n```",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": {
+            "function_name": "normalize_spaces",
+            "tests": [
+              "assert normalize_spaces('  hello   world  ') == 'hello world'",
+              "assert normalize_spaces('a\\n\\tb') == 'a b'",
+              "assert normalize_spaces('single') == 'single'"
+            ]
+          },
+          "baseline": {
+            "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space, and leading/trailing whitespace removed from each line.\n    \"\"\"\n    return '\\n'.join([line.strip() for line in text.split('\\n') if line.strip()])",
+            "latency_s": 8.2782,
+            "meta": {
+              "error": "AssertionError: ",
+              "partial_score": 0.0,
+              "strategy": "baseline_greedy",
+              "tests_passed": 0,
+              "tests_total": 3
+            },
+            "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space, and leading/trailing whitespace removed from each line.\n    \"\"\"\n    return '\\n'.join([line.strip() for line in text.split('\\n') if line.strip()])\n```",
+            "score": 0.0
+          },
+          "category": "code",
+          "task_id": "code_normalize_spaces",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space, and leading/trailing whitespace removed from each line.\n    \"\"\"\n    return '\\n'.join([line.strip() for line in text.split('\\n') if line.strip()])\n\n# Example usage:\ntext = \"\"\"\nThis is an example text with some extra spaces.\n  This is another line with more spaces.\nAnd here's one without any extra spaces.\n\"\"\"\nprint(normalize_spaces(text))",
+              "latency_s": 12.9627,
+              "meta": {
+                "error": "AssertionError: ",
+                "partial_score": 0.0,
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "tests_passed": 0,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space, and leading/trailing whitespace removed from each line.\n    \"\"\"\n    return '\\n'.join([line.strip() for line in text.split('\\n') if line.strip()])\n\n# Example usage:\ntext = \"\"\"\nThis is an example text with some extra spaces.\n  This is another line with more spaces.\nAnd here's one without any extra spaces.\n\"\"\"\nprint(normalize_spaces(text))\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\"\"\"\n    return re.sub(r'\\s+', ' ', text).strip()\n\n# Example usage:\nprint(normalize_spaces(\"  This is   an example \\t string\\nwith irregular\\t spacing \")) # Output: \"This is an example string with irregular spacing\"",
+              "latency_s": 7.4126,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\"\"\"\n    return re.sub(r'\\s+', ' ', text).strip()\n\n# Example usage:\nprint(normalize_spaces(\"  This is   an example \\t string\\nwith irregular\\t spacing \")) # Output: \"This is an example string with irregular spacing\"\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def normalize_spaces(text):\n    return ' '.join(text.split())",
+              "latency_s": 1.7686,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef normalize_spaces(text):\n    return ' '.join(text.split())\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space and stripped of leading/trailing whitespace.\n    \"\"\"\n    # Replace sequences of whitespace characters with a single space\n    cleaned_text = re.sub(r'\\s+', ' ', text)\n    # Strip leading and trailing whitespace\n    return cleaned_text.strip()\n\n# Test the function\nprint(normalize_spaces(\"  Hello   World! \\nThis is\\ta test.\\t  \"))  # Output: \"Hello World This is a test.\"",
+              "latency_s": 14.06,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple lines of text.\n\n    Returns:\n    str: A new string with all consecutive whitespace collapsed to a single space and stripped of leading/trailing whitespace.\n    \"\"\"\n    # Replace sequences of whitespace characters with a single space\n    cleaned_text = re.sub(r'\\s+', ' ', text)\n    # Strip leading and trailing whitespace\n    return cleaned_text.strip()\n\n# Test the function\nprint(normalize_spaces(\"  Hello   World! \\nThis is\\ta test.\\t  \"))  # Output: \"Hello World This is a test.\"\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple spaces, tabs, and newline characters.\n\n    Returns:\n    str: The normalized string with all consecutive whitespace collapsed to a single space.\n    \"\"\"\n    return ' '.join(text.split())\n\n# Example usage:\nnormalized_text = normalize_spaces(\"  Hello   World! \\nThis is a test.\\n\")\nprint(normalized_text)  # Expected output: \"Hello World This is a test.\"",
+              "latency_s": 10.7898,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string containing multiple spaces, tabs, and newline characters.\n\n    Returns:\n    str: The normalized string with all consecutive whitespace collapsed to a single space.\n    \"\"\"\n    return ' '.join(text.split())\n\n# Example usage:\nnormalized_text = normalize_spaces(\"  Hello   World! \\nThis is a test.\\n\")\nprint(normalized_text)  # Expected output: \"Hello World This is a test.\"\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "def normalize_spaces(text):\n    return ' '.join(text.split())",
+            "latency_s": 1.7686,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.9,
+              "tests_passed": 3,
+              "tests_total": 3,
+              "top_p": 0.85
+            },
+            "raw_text": "```python\ndef normalize_spaces(text):\n    return ' '.join(text.split())\n```",
+            "score": 1.0
+          }
+        }
+      ],
+      "timings": {
+        "estimate_s": 0.0651,
+        "inspection_s": 0.213,
+        "model_load_s": 0.6833,
+        "tokenizer_load_s": 1.1109
+      }
+    },
+    {
+      "estimate": {
+        "assumptions": [
+          "ctx is treated as prompt_len + avg_generated for the KV estimate.",
+          "GQA uses num_key_value_heads when provided."
+        ],
+        "backend": "hf",
+        "batch": 1,
+        "bytes_per_value": 4,
+        "ctx": 2048,
+        "estimated_total_bytes": null,
+        "kv_bytes_per_token": 57344,
+        "model_ref": "Qwen/Qwen2.5-1.5B-Instruct",
+        "precision": "fp32",
+        "total_kv_bytes": 117440512,
+        "weights_bytes": null
+      },
+      "fanout_plan": {
+        "n_candidates": 5,
+        "styles": [
+          "concise",
+          "cot"
+        ],
+        "temperatures": [
+          0.2,
+          0.6,
+          0.9
+        ],
+        "top_p": [
+          0.85,
+          0.95
+        ],
+        "ultra_profile": "default"
+      },
+      "inspection": {
+        "arch": "Qwen2ForCausalLM",
+        "backends_supported": [
+          "hf",
+          "vllm",
+          "sglang"
+        ],
+        "chat_template": "{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- messages[0]['content'] }}\n    {%- else %}\n        {{- 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.' }}\n    {%- endif %}\n    {{- \"\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0]['content'] + '<|im_end|>\\n' }}\n    {%- else %}\n        {{- '<|im_start|>system\\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) or (message.role == \"assistant\" and not message.tool_calls) %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {{- '<|im_start|>' + message.role }}\n        {%- if message.content %}\n            {{- '\\n' + message.content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- '\\n<tool_call>\\n{\"name\": \"' }}\n            {{- tool_call.name }}\n            {{- '\", \"arguments\": ' }}\n            {{- tool_call.arguments | tojson }}\n            {{- '}\\n</tool_call>' }}\n        {%- endfor %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n{%- endif %}\n",
+        "context_window": 32768,
+        "dtype_candidates": [
+          "bfloat16"
+        ],
+        "eos_tokens": [
+          "151645",
+          "151643",
+          "<|im_end|>"
+        ],
+        "head_dim": 128,
+        "hidden_size": 1536,
+        "n_heads": 12,
+        "n_kv_heads": 2,
+        "n_layers": 28,
+        "rope_scaling": null,
+        "sliding_window": 32768,
+        "stop_tokens": [],
+        "system_prompt_hint": "chat template includes system role",
+        "tokenizer_info": {
+          "bos_token": null,
+          "eos_token": "<|im_end|>",
+          "model_max_length": 131072,
+          "tokenizer_class": "Qwen2Tokenizer"
+        },
+        "vision_support": false
+      },
+      "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "summary": {
+        "category_accuracy": {
+          "code": {
+            "baseline_greedy": 1.0,
+            "ultra_scaffold": 1.0
+          },
+          "json": {
+            "baseline_greedy": 0.5,
+            "ultra_scaffold": 0.5
+          },
+          "logic": {
+            "baseline_greedy": 0.6666666666666666,
+            "ultra_scaffold": 0.6666666666666666
+          },
+          "math": {
+            "baseline_greedy": 0.3333333333333333,
+            "ultra_scaffold": 0.3333333333333333
+          }
+        },
+        "strategy_accuracy": {
+          "baseline_greedy": 0.6,
+          "ultra_scaffold": 0.6
+        }
+      },
+      "tasks": [
+        {
+          "answer": "36",
+          "baseline": {
+            "canonical_answer": "46",
+            "latency_s": 1.5508,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "46",
+            "score": 0.0
+          },
+          "category": "math",
+          "task_id": "math_bookstore",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "48",
+              "latency_s": 1.2892,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "48",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "3",
+              "latency_s": 11.6196,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "47\n\nReasoning: The bookstore initially sold 18 + 27 = 45 notebooks. After accounting for the 9 returned notebooks, the total number of notebooks sold is 45 - 9 = 3",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "48",
+              "latency_s": 1.1426,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "48",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "3",
+              "latency_s": 11.3102,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "47\n\nReasoning: The bookstore initially sold 18 + 27 = 45 notebooks. After accounting for the 9 returned notebooks, the total number of notebooks sold is 45 - 9 = 3",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "46",
+              "latency_s": 1.1233,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "46",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "48",
+            "latency_s": 1.2892,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "48",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "60",
+          "baseline": {
+            "canonical_answer": "60",
+            "latency_s": 1.1301,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "60",
+            "score": 1.0
+          },
+          "category": "math",
+          "task_id": "math_train",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "60",
+              "latency_s": 1.1737,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "60",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "97",
+              "latency_s": 11.2991,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "60 miles left\n\nReasoning: To find out how many miles are left on the train trip, subtract the total distance traveled from the initial distance of 245 miles. So, 245 - (97 +",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "60",
+              "latency_s": 1.1651,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "60",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "88",
+              "latency_s": 11.8519,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "160 miles\n\nReasoning: To find out how many miles are left, we subtract the total distance traveled from the initial distance of the trip. So, 245 - (97 + 88) =",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "60",
+              "latency_s": 1.2082,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "60",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "60",
+            "latency_s": 1.1737,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "60",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": "30",
+          "baseline": {
+            "canonical_answer": "20",
+            "latency_s": 1.148,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "20",
+            "score": 0.0
+          },
+          "category": "math",
+          "task_id": "math_baker",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "20",
+              "latency_s": 1.2067,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "20",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "17",
+              "latency_s": 12.6995,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "The baker has 30 muffins now.\n\nReasoning: The baker originally had 24 muffins. After selling 7, they had 24 - 7 = 17 muffins left. Then, after baking",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "20",
+              "latency_s": 1.2354,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "20",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "30",
+              "latency_s": 7.0466,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "The baker has 24 - 7 + 13 = 30 muffins now.",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "20",
+              "latency_s": 1.2115,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "20",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "20",
+            "latency_s": 1.2067,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "20",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": "B",
+          "baseline": {
+            "canonical_answer": "B",
+            "latency_s": 1.426,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "B",
+            "score": 1.0
+          },
+          "category": "logic",
+          "task_id": "logic_syllogism",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.4084,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 7.4577,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "B\n\nReasoning: If all bloops are razzies and all razzies are lazies, then since",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.6831,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 7.1584,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "B\n\nReasoning: If all blops are razzies and all razzies are lazies, it follows",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.4718,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "B",
+            "latency_s": 1.4084,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "B",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": "C",
+          "baseline": {
+            "canonical_answer": "C",
+            "latency_s": 1.1279,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "C",
+            "score": 1.0
+          },
+          "category": "logic",
+          "task_id": "logic_height",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "C",
+              "latency_s": 1.0777,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "C",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "C",
+              "latency_s": 7.1102,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "C) Noah. Since Emma is taller than Liam who in turn is taller than Noah, it means Noah is the shortest",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "C",
+              "latency_s": 1.1319,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "C",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "C",
+              "latency_s": 7.051,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "C) Noah. Since Emma is taller than Liam, who in turn is taller than Noah, it means Noah is the",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "C",
+              "latency_s": 1.0714,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "C",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "C",
+            "latency_s": 1.0777,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "C",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": "A",
+          "baseline": {
+            "canonical_answer": "B",
+            "latency_s": 0.9889,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "B",
+            "score": 0.0
+          },
+          "category": "logic",
+          "task_id": "logic_calendar",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.1159,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 6.8738,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "B\n\nReasoning: If we count two days earlier than Friday, we move one day back to Thursday.",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 1.3221,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 6.7973,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "B\n\nReasoning: If a meeting is scheduled for Friday, two days earlier would be three days before Friday, which",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": "B",
+              "latency_s": 0.9641,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "B",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "B",
+            "latency_s": 1.1159,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "B",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": {
+            "city": "Austin",
+            "customer": "Maya Chen",
+            "item": "lamps",
+            "quantity": 3,
+            "total": 84
+          },
+          "baseline": {
+            "canonical_answer": {
+              "city": "Austin",
+              "customer": "Maya Chen",
+              "item": "lamps",
+              "quantity": 3,
+              "total": "$84"
+            },
+            "latency_s": 10.9191,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+            "score": 0.0
+          },
+          "category": "json",
+          "task_id": "json_customer",
+          "ultra_candidates": [
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 11.4409,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 11.3239,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 10.3053,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 11.7885,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+              "score": 0.0
+            },
+            {
+              "canonical_answer": {
+                "city": "Austin",
+                "customer": "Maya Chen",
+                "item": "lamps",
+                "quantity": 3,
+                "total": "$84"
+              },
+              "latency_s": 11.4835,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+              "score": 0.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": {
+              "city": "Austin",
+              "customer": "Maya Chen",
+              "item": "lamps",
+              "quantity": 3,
+              "total": "$84"
+            },
+            "latency_s": 11.4409,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "```json\n{\n  \"customer\": \"Maya Chen\",\n  \"city\": \"Austin\",\n  \"item\": \"lamps\",\n  \"quantity\": 3,\n  \"total\": \"$84\"\n}\n```",
+            "score": 0.0
+          }
+        },
+        {
+          "answer": {
+            "assignee": "Omar",
+            "priority": "high",
+            "status": "open",
+            "ticket_id": "A19"
+          },
+          "baseline": {
+            "canonical_answer": {
+              "assignee": "Omar",
+              "priority": "high",
+              "status": "open",
+              "ticket_id": "A19"
+            },
+            "latency_s": 9.913,
+            "meta": {
+              "strategy": "baseline_greedy"
+            },
+            "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+            "score": 1.0
+          },
+          "category": "json",
+          "task_id": "json_ticket",
+          "ultra_candidates": [
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 10.4836,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 9.9484,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 10.4243,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "top_p": 0.85
+              },
+              "raw_text": "[\n  {\n    \"ticket_id\": \"A19\",\n    \"priority\": \"high\",\n    \"assignee\": \"Omar\",\n    \"status\": \"open\"\n  }\n]",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 10.5132,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "top_p": 0.95
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": {
+                "assignee": "Omar",
+                "priority": "high",
+                "status": "open",
+                "ticket_id": "A19"
+              },
+              "latency_s": 10.2605,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "top_p": 0.85
+              },
+              "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": {
+              "assignee": "Omar",
+              "priority": "high",
+              "status": "open",
+              "ticket_id": "A19"
+            },
+            "latency_s": 10.4836,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "top_p": 0.85
+            },
+            "raw_text": "```json\n{\n  \"ticket_id\": \"A19\",\n  \"priority\": \"high\",\n  \"assignee\": \"Omar\",\n  \"status\": \"open\"\n}\n```",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": {
+            "function_name": "square_evens",
+            "tests": [
+              "assert square_evens([1, 2, 3, 4]) == [4, 16]",
+              "assert square_evens([]) == []",
+              "assert square_evens([2, 2, 5]) == [4, 4]"
+            ]
+          },
+          "baseline": {
+            "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]",
+            "latency_s": 7.5461,
+            "meta": {
+              "strategy": "baseline_greedy",
+              "tests_passed": 3,
+              "tests_total": 3
+            },
+            "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]\n```",
+            "score": 1.0
+          },
+          "category": "code",
+          "task_id": "code_square_evens",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]",
+              "latency_s": 8.3634,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: A new list with the squares of even numbers from the input list\n    \"\"\"\n    return [x**2 for x in values if x % 2 == 0]",
+              "latency_s": 31.428,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: A new list with the squares of even numbers from the input list\n    \"\"\"\n    return [x**2 for x in values if x % 2 == 0]\n```\nThis function takes a list of integers as input and returns a new list where each element is the square of an even number found in the input list, while maintaining the original order of elements that are even.",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]",
+              "latency_s": 7.5727,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: A new list with squares of even numbers from the input list\n    \"\"\"\n    return [x ** 2 for x in values if x % 2 == 0]",
+              "latency_s": 20.1168,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    \"\"\"\n    Return a list containing the square of each even integer in values, preserving order.\n\n    :param values: List of integers\n    :return: A new list with squares of even numbers from the input list\n    \"\"\"\n    return [x ** 2 for x in values if x % 2 == 0]\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]",
+              "latency_s": 7.7129,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "def square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]",
+            "latency_s": 7.5727,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.9,
+              "tests_passed": 3,
+              "tests_total": 3,
+              "top_p": 0.85
+            },
+            "raw_text": "```python\ndef square_evens(values):\n    return [x**2 for x in values if x % 2 == 0]\n```",
+            "score": 1.0
+          }
+        },
+        {
+          "answer": {
+            "function_name": "normalize_spaces",
+            "tests": [
+              "assert normalize_spaces('  hello   world  ') == 'hello world'",
+              "assert normalize_spaces('a\\n\\tb') == 'a b'",
+              "assert normalize_spaces('single') == 'single'"
+            ]
+          },
+          "baseline": {
+            "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()",
+            "latency_s": 6.9098,
+            "meta": {
+              "strategy": "baseline_greedy",
+              "tests_passed": 3,
+              "tests_total": 3
+            },
+            "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()\n```",
+            "score": 1.0
+          },
+          "category": "code",
+          "task_id": "code_normalize_spaces",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()",
+              "latency_s": 7.186,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: A new string with collapsed whitespace and no leading or trailing whitespace.\n    \"\"\"\n    # Replace one or more whitespace characters (\\s+) with a single space followed by an empty string\n    normalized_text = re.sub(r'\\s+', ' ', text).strip()\n    \n    return normalized_text",
+              "latency_s": 38.7982,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Parameters:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: A new string with collapsed whitespace and no leading or trailing whitespace.\n    \"\"\"\n    # Replace one or more whitespace characters (\\s+) with a single space followed by an empty string\n    normalized_text = re.sub(r'\\s+', ' ', text).strip()\n    \n    return normalized_text\n```\n\nThis function uses regular expressions to find sequences of whitespace characters (`\\s+`) in the input `text` and replaces them with a single space. It then strips any remaining leading or trailing whitespace from the result using the `.strip()` method.",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\"\"\"\n    return ' '.join(re.findall(r'\\S+', text)).strip()",
+              "latency_s": 10.907,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.9,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\"\"\"\n    return ' '.join(re.findall(r'\\S+', text)).strip()\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Args:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: The processed string with collapsed and stripped spaces.\n    \"\"\"\n    # Replace sequences of one or more whitespace characters (\\s+) with a single space\n    normalized_text = re.sub(r'\\s+', ' ', text)\n    # Strip leading and trailing whitespace\n    return normalized_text.strip()\n\n# Example usage\nexample_text = \"  This   is  an example    text. \"\nprint(normalize_spaces(example_text))  # Output: \"This is an example text.\"",
+              "latency_s": 38.6387,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "cot",
+                "temperature": 0.2,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.95
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Args:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: The processed string with collapsed and stripped spaces.\n    \"\"\"\n    # Replace sequences of one or more whitespace characters (\\s+) with a single space\n    normalized_text = re.sub(r'\\s+', ' ', text)\n    # Strip leading and trailing whitespace\n    return normalized_text.strip()\n\n# Example usage\nexample_text = \"  This   is  an example    text. \"\nprint(normalize_spaces(example_text))  # Output: \"This is an example text.\"\n```",
+              "score": 1.0
+            },
+            {
+              "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Args:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: The processed string with collapsed and stripped whitespace.\n    \"\"\"\n    # Replace one or more whitespace characters (\\s+) with a single space\n    return re.sub(r'\\s+', ' ', text).strip()",
+              "latency_s": 20.6139,
+              "meta": {
+                "strategy": "ultra_scaffold",
+                "style": "concise",
+                "temperature": 0.6,
+                "tests_passed": 3,
+                "tests_total": 3,
+                "top_p": 0.85
+              },
+              "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    \"\"\"\n    Collapse consecutive whitespace to a single space and strip leading/trailing whitespace.\n\n    Args:\n    text (str): The input string with potentially multiple spaces.\n\n    Returns:\n    str: The processed string with collapsed and stripped whitespace.\n    \"\"\"\n    # Replace one or more whitespace characters (\\s+) with a single space\n    return re.sub(r'\\s+', ' ', text).strip()\n```",
+              "score": 1.0
+            }
+          ],
+          "ultra_scaffold": {
+            "canonical_answer": "import re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()",
+            "latency_s": 7.186,
+            "meta": {
+              "strategy": "ultra_scaffold",
+              "style": "concise",
+              "temperature": 0.2,
+              "tests_passed": 3,
+              "tests_total": 3,
+              "top_p": 0.85
+            },
+            "raw_text": "```python\nimport re\n\ndef normalize_spaces(text):\n    return ' '.join(re.findall(r'\\S+', text)).strip()\n```",
+            "score": 1.0
+          }
+        }
+      ],
+      "timings": {
+        "estimate_s": 0.0973,
+        "inspection_s": 0.1781,
+        "model_load_s": 1.2214,
+        "tokenizer_load_s": 0.9869
+      }
+    }
+  ],
+  "n_candidates": 5
+}

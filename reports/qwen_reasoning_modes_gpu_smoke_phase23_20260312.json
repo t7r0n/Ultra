@@ -1,0 +1,600 @@
+{
+  "aggregate": {
+    "mean_accuracy": {
+      "oracle_best_of_k": 0.5,
+      "single_pass": 0.25,
+      "ultra_fanout": 0.5
+    },
+    "mean_category_accuracy": {
+      "logic": {
+        "oracle_best_of_k": 1.0,
+        "single_pass": 0.5,
+        "ultra_fanout": 1.0
+      },
+      "math": {
+        "oracle_best_of_k": 0.0,
+        "single_pass": 0.0,
+        "ultra_fanout": 0.0
+      }
+    },
+    "mean_timing_ratio": {
+      "ultra_vs_single_generation_time": 0.9349812156463755
+    }
+  },
+  "conditions": [
+    {
+      "condition": {
+        "code_min_p": null,
+        "code_repetition_penalty": null,
+        "code_temperature": null,
+        "code_top_k": null,
+        "code_top_p": null,
+        "family": "qwen3.5",
+        "label": "qwen3.5_0.8b_nonthinking",
+        "model_id": "Qwen/Qwen3.5-0.8B",
+        "text_min_p": 0.0,
+        "text_repetition_penalty": 1.0,
+        "text_temperature": 1.0,
+        "text_top_k": 20,
+        "text_top_p": 1.0,
+        "thinking": false
+      },
+      "summary": {
+        "accuracy": {
+          "oracle_best_of_k": 0.5,
+          "single_pass": 0.0,
+          "ultra_fanout": 0.5
+        },
+        "avg_selected_generated_tokens": 55.0,
+        "category_accuracy": {
+          "logic": {
+            "oracle_best_of_k": 1.0,
+            "single_pass": 0.0,
+            "ultra_fanout": 1.0
+          },
+          "math": {
+            "oracle_best_of_k": 0.0,
+            "single_pass": 0.0,
+            "ultra_fanout": 0.0
+          }
+        },
+        "category_generation_time_s": {
+          "logic": {
+            "single_pass": 0.6444230399974913,
+            "ultra_fanout": 1.1217696300009266
+          },
+          "math": {
+            "single_pass": 7.9468132500005595,
+            "ultra_fanout": 6.150658770002337
+          }
+        },
+        "selected_answer_stage_reached_rate": 1.0,
+        "selected_fallback_answer_rate": 0.5,
+        "selected_structured_answer_rate": 0.5,
+        "selected_think_block_rate": 0.0,
+        "selected_think_closed_rate": 0.0,
+        "selected_truncated_inside_think_rate": 0.0
+      },
+      "tasks": [
+        {
+          "answer": "22",
+          "category": "math",
+          "single_pass": {
+            "canonical_answer": "52",
+            "cleaned_text": "To find the number of child tickets sold, we can set up a system of linear equations based on the information provided.\n\n**1. Define the variables:**\nLet $x$ be the number of adult tickets sold.\nLet $y$ be the number of child tickets sold.\n\n**2. Translate the given information into equations:**\n*   **Total tickets sold:** The sum of adult and child tickets equals 52.\n    $$x + y =",
+            "generated_tokens": 96,
+            "latency_s": 7.9468,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "To find the number of child tickets sold, we can set up a system of linear equations based on the information provided.\n\n**1. Define the variables:**\nLet $x$ be the number of adult tickets sold.\nLet $y$ be the number of child tickets sold.\n\n**2. Translate the given information into equations:**\n*   **Total tickets sold:** The sum of adult and child tickets equals 52.\n    $$x + y =",
+              "avg_logprob": -0.1322181075811386,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "To find the number of child tickets sold, we can set up a system of linear equations based on the information provided.\n\n**1. Define the variables:**\nLet $x$ be the number of adult tickets sold.\nLet $y$ be the number of child tickets sold.\n\n**2. Translate the given information into equations:**\n*   **Total tickets sold:** The sum of adult and child tickets equals 52.\n    $$x + y =",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "To find the number of child tickets sold, we can set up a system of linear equations based on the information provided.\n\n**1. Define the variables:**\nLet $x$ be the number of adult tickets sold.\nLet $y$ be the number of child tickets sold.\n\n**2. Translate the given information into equations:**\n*   **Total tickets sold:** The sum of adult and child tickets equals 52.\n    $$x + y =",
+            "score": 0.0,
+            "think_block_present": false
+          },
+          "task_id": "math_tickets",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "9",
+              "cleaned_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "generated_tokens": 96,
+              "latency_s": 6.1507,
+              "meta": {
+                "answer_budget": 0,
+                "answer_stage_reached": true,
+                "answer_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+                "avg_logprob": -0.08685898780822754,
+                "candidate_index": 0,
+                "canonical_source": "fallback_last_number",
+                "generation_stage_count": 1,
+                "normalized_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+                "reasoning_budget": 96,
+                "reasoning_text": "",
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": false
+              },
+              "raw_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "score": 0.0,
+              "think_block_present": false
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": "9",
+            "cleaned_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+            "generated_tokens": 96,
+            "latency_s": 6.1507,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "avg_logprob": -0.08685898780822754,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+            "score": 0.0,
+            "think_block_present": false
+          },
+          "ultra_selected": {
+            "canonical_answer": "9",
+            "cleaned_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+            "generated_tokens": 96,
+            "latency_s": 6.1507,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "avg_logprob": -0.08685898780822754,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "Let $c$ be the number of child tickets sold.\nLet $a$ be the number of adult tickets sold.\n\nWe are given the following information:\n1.  The total number of tickets sold is 52.\n    $$a + c = 52$$\n2.  The price of an adult ticket is $17$.\n    $$17a$$\n3.  The price of a child ticket is $9$.",
+            "score": 0.0,
+            "think_block_present": false
+          }
+        },
+        {
+          "answer": "Mixed",
+          "category": "logic",
+          "single_pass": {
+            "canonical_answer": "{}\n<|endoftext|>",
+            "cleaned_text": "{}\n<|endoftext|>",
+            "generated_tokens": 4,
+            "latency_s": 0.6444,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "{}\n<|endoftext|>",
+              "avg_logprob": -1.249327301979065,
+              "canonical_source": "fallback_text",
+              "generation_stage_count": 1,
+              "normalized_text": "{}\n<|endoftext|>",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "{}<|im_end|>\n<|endoftext|>",
+            "score": 0.0,
+            "think_block_present": false
+          },
+          "task_id": "logic_mixed_box",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "Mixed",
+              "cleaned_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+              "generated_tokens": 14,
+              "latency_s": 1.1218,
+              "meta": {
+                "answer_budget": 0,
+                "answer_stage_reached": true,
+                "answer_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+                "avg_logprob": -0.10632006078958511,
+                "candidate_index": 0,
+                "canonical_source": "json",
+                "generation_stage_count": 1,
+                "normalized_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+                "reasoning_budget": 96,
+                "reasoning_text": "",
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": false
+              },
+              "raw_text": "```json\n{\"answer\": \"Mixed\"}\n```<|im_end|>\n<|endoftext|>",
+              "score": 1.0,
+              "think_block_present": false
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": "Mixed",
+            "cleaned_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+            "generated_tokens": 14,
+            "latency_s": 1.1218,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+              "avg_logprob": -0.10632006078958511,
+              "candidate_index": 0,
+              "canonical_source": "json",
+              "generation_stage_count": 1,
+              "normalized_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "```json\n{\"answer\": \"Mixed\"}\n```<|im_end|>\n<|endoftext|>",
+            "score": 1.0,
+            "think_block_present": false
+          },
+          "ultra_selected": {
+            "canonical_answer": "Mixed",
+            "cleaned_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+            "generated_tokens": 14,
+            "latency_s": 1.1218,
+            "meta": {
+              "answer_budget": 0,
+              "answer_stage_reached": true,
+              "answer_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+              "avg_logprob": -0.10632006078958511,
+              "candidate_index": 0,
+              "canonical_source": "json",
+              "generation_stage_count": 1,
+              "normalized_text": "```json\n{\"answer\": \"Mixed\"}\n```\n<|endoftext|>",
+              "reasoning_budget": 96,
+              "reasoning_text": "",
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": false
+            },
+            "raw_text": "```json\n{\"answer\": \"Mixed\"}\n```<|im_end|>\n<|endoftext|>",
+            "score": 1.0,
+            "think_block_present": false
+          }
+        }
+      ],
+      "timings": {
+        "model_load_s": 2.3385,
+        "tokenizer_load_s": 2.0953
+      }
+    },
+    {
+      "condition": {
+        "code_min_p": null,
+        "code_repetition_penalty": null,
+        "code_temperature": null,
+        "code_top_k": null,
+        "code_top_p": null,
+        "family": "qwen3",
+        "label": "qwen3_1.7b_thinking",
+        "model_id": "Qwen/Qwen3-1.7B",
+        "text_min_p": 0.0,
+        "text_repetition_penalty": 1.0,
+        "text_temperature": 0.6,
+        "text_top_k": 20,
+        "text_top_p": 0.95,
+        "thinking": true
+      },
+      "summary": {
+        "accuracy": {
+          "oracle_best_of_k": 0.5,
+          "single_pass": 0.5,
+          "ultra_fanout": 0.5
+        },
+        "avg_selected_generated_tokens": 208.0,
+        "category_accuracy": {
+          "logic": {
+            "oracle_best_of_k": 1.0,
+            "single_pass": 1.0,
+            "ultra_fanout": 1.0
+          },
+          "math": {
+            "oracle_best_of_k": 0.0,
+            "single_pass": 0.0,
+            "ultra_fanout": 0.0
+          }
+        },
+        "category_generation_time_s": {
+          "logic": {
+            "single_pass": 13.042997459997423,
+            "ultra_fanout": 13.923089460000483
+          },
+          "math": {
+            "single_pass": 12.911205960001098,
+            "ultra_fanout": 12.639924539998901
+          }
+        },
+        "selected_answer_stage_reached_rate": 0.0,
+        "selected_fallback_answer_rate": 1.0,
+        "selected_structured_answer_rate": 0.0,
+        "selected_think_block_rate": 1.0,
+        "selected_think_closed_rate": 0.0,
+        "selected_truncated_inside_think_rate": 1.0
+      },
+      "tasks": [
+        {
+          "answer": "22",
+          "category": "math",
+          "single_pass": {
+            "canonical_answer": "708",
+            "cleaned_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. We need to find out how many child tickets were sold.\n\nHmm, let's start by setting up some variables. Let me think. Let's let the number of adult tickets be A and the number of child tickets be C. So, the total number of tickets is A + C = 52. That's one equation.\n\nThen, the total money collected is 17A + 9C = 708. Because each adult ticket is $17 and each child ticket is $9. So, that's another equation.\n\nSo we have two equations:\n\n1. A + C = 52\n2. 17A + 9C = 708\n\nWe need to solve this system of equations to find the value of C",
+            "generated_tokens": 208,
+            "latency_s": 12.9112,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.0655740275979042,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. We need to find out how many child tickets were sold.\n\nHmm, let's start by setting up some variables. Let me think. Let's let the number of adult tickets be A and the number of child tickets be C. So, the total number of tickets is A + C = 52. That's one equation.\n\nThen, the total money collected is 17A + 9C = 708. Because each adult ticket is $17 and each child ticket is $9. So, that's another equation.\n\nSo we have two equations:\n\n1. A + C = 52\n2. 17A + 9C = 708\n\nWe need to solve this system of equations to find the value of C",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. We need to find out how many child tickets were sold.\n\nHmm, let's start by setting up some variables. Let me think. Let's let the number of adult tickets be A and the number of child tickets be C. So, the total number of tickets is A + C = 52. That's one equation.\n\nThen, the total money collected is 17A + 9C = 708. Because each adult ticket is $17 and each child ticket is $9. So, that's another equation.\n\nSo we have two equations:\n\n1. A + C = 52\n2. 17A + 9C = 708\n\nWe need to solve this system of equations to find the value of C",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's try to figure out how many child tickets were sold. So, the theater sold adult tickets for $17 and child tickets for $9. They sold a total of 52 tickets and collected $708. We need to find out how many child tickets were sold.\n\nHmm, let's start by setting up some variables. Let me think. Let's let the number of adult tickets be A and the number of child tickets be C. So, the total number of tickets is A + C = 52. That's one equation.\n\nThen, the total money collected is 17A + 9C = 708. Because each adult ticket is $17 and each child ticket is $9. So, that's another equation.\n\nSo we have two equations:\n\n1. A + C = 52\n2. 17A + 9C = 708\n\nWe need to solve this system of equations to find the value of C",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "task_id": "math_tickets",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "2",
+              "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "generated_tokens": 208,
+              "latency_s": 12.6399,
+              "meta": {
+                "answer_budget": 48,
+                "answer_stage_invoked": false,
+                "answer_stage_reached": false,
+                "answer_text": "",
+                "avg_logprob": -0.04040393605828285,
+                "candidate_index": 0,
+                "canonical_source": "fallback_last_number",
+                "generation_stage_count": 1,
+                "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+                "reasoning_budget": 208,
+                "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+                "stage_one_generated_tokens": 208,
+                "stage_two_generated_tokens": 0,
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": true
+              },
+              "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "score": 0.0,
+              "think_block_present": true
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": "2",
+            "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+            "generated_tokens": 208,
+            "latency_s": 12.6399,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.04040393605828285,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "ultra_selected": {
+            "canonical_answer": "2",
+            "cleaned_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+            "generated_tokens": 208,
+            "latency_s": 12.6399,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.04040393605828285,
+              "candidate_index": 0,
+              "canonical_source": "fallback_last_number",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. The problem is about a theater selling adult and child tickets. They sold a total of 52 tickets, and the total revenue was $708. Adult tickets are $17 each, child tickets are $9 each. We need to find out how many child tickets were sold.\n\nHmm, so let me set up the equations. Let's let the number of adult tickets be A and the number of child tickets be C. Then, according to the problem, the total number of tickets is 52. So that would be:\n\nA + C = 52\n\nAnd the total revenue is $708. Since adult tickets are $17 each, and child tickets are $9 each, the revenue from adults is 17A and from children is 9C. So:\n\n17A + 9C = 708\n\nNow, we have a system of two equations:\n\n1) A + C = 52\n\n2)",
+            "score": 0.0,
+            "think_block_present": true
+          }
+        },
+        {
+          "answer": "Mixed",
+          "category": "logic",
+          "single_pass": {
+            "canonical_answer": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+            "cleaned_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+            "generated_tokens": 208,
+            "latency_s": 13.043,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.06759236752986908,
+              "canonical_source": "fallback_text",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+            "score": 1.0,
+            "think_block_present": true
+          },
+          "task_id": "logic_mixed_box",
+          "ultra_candidates": [
+            {
+              "canonical_answer": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "generated_tokens": 208,
+              "latency_s": 13.9231,
+              "meta": {
+                "answer_budget": 48,
+                "answer_stage_invoked": false,
+                "answer_stage_reached": false,
+                "answer_text": "",
+                "avg_logprob": -0.049189597368240356,
+                "candidate_index": 0,
+                "canonical_source": "fallback_text",
+                "generation_stage_count": 1,
+                "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+                "reasoning_budget": 208,
+                "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+                "stage_one_generated_tokens": 208,
+                "stage_two_generated_tokens": 0,
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": true
+              },
+              "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "score": 1.0,
+              "think_block_present": true
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "generated_tokens": 208,
+            "latency_s": 13.9231,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.049189597368240356,
+              "candidate_index": 0,
+              "canonical_source": "fallback_text",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "score": 1.0,
+            "think_block_present": true
+          },
+          "ultra_selected": {
+            "canonical_answer": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "generated_tokens": 208,
+            "latency_s": 13.9231,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.049189597368240356,
+              "candidate_index": 0,
+              "canonical_source": "fallback_text",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "score": 1.0,
+            "think_block_present": true
+          }
+        }
+      ],
+      "timings": {
+        "model_load_s": 2.4442,
+        "tokenizer_load_s": 1.402
+      }
+    }
+  ],
+  "device": "cuda",
+  "dtype": "fp16",
+  "generated_at": "2026-03-12T21:08:53Z",
+  "n_candidates": 1,
+  "single_token_multiplier": 1.0,
+  "tasks_run": [
+    "math_tickets",
+    "logic_mixed_box"
+  ],
+  "thinking_token_multiplier": 1.0
+}
