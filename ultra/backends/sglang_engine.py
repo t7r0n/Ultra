@@ -1,27 +1,26 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, Optional
 
-from . import registry
-
-
-@dataclass
-class SGLangCompletion:
-    text: str
-    logprobs: Optional[List[float]] = None
+from . import Completion, SamplingParameters, registry
 
 
 class SGLangEngine:
-    """Placeholder SGLang backend."""
-
     name = "sglang"
-
-    def generate(self, prompt: str, **kwargs) -> SGLangCompletion:  # pragma: no cover - optional
-        raise NotImplementedError("SGLang backend not implemented in lightweight build")
 
     def supports_structured_decoding(self) -> bool:
         return True
 
+    def generate(
+        self,
+        *,
+        prompt: str,
+        sampling: SamplingParameters,
+        inspection,
+        structured: Optional[Dict[str, object]] = None,
+    ) -> Completion:
+        raise RuntimeError("SGLang backend requires the sglang package and runtime server")
+
 
 registry.register(SGLangEngine())
+

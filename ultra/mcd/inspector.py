@@ -1,21 +1,155 @@
 from __future__ import annotations
 
 import json
-import math
-import pathlib
+import logging
+import os
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-try:  # pragma: no cover - optional dependency
+from ..tools import hwcheck
+
+LOGGER = logging.getLogger(__name__)
+
+try:  # pragma: no cover - optional dependency for remote fetches
     from huggingface_hub import snapshot_download
 except Exception:  # pragma: no cover - optional dependency
     snapshot_download = None  # type: ignore
 
+try:  # pragma: no cover - optional dependency for tokenizer rendering
+    import jinja2
+except Exception:  # pragma: no cover - optional dependency
+    jinja2 = None  # type: ignore
+
+
+class ModelDiscoveryError(RuntimeError):
+    """Raised when inspection cannot complete."""
+
+
+def _load_json(path: Path, *, required: bool = True) -> Dict[str, Any]:
+    if not path.exists():
+        if required:
+            raise ModelDiscoveryError(f"Missing required file: {path}")
+        return {}
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def _maybe_snapshot(model_ref: str) -> Path:
+    candidate = Path(model_ref)
+    if candidate.exists():
+        return candidate
+    if "/" not in model_ref:
+        raise ModelDiscoveryError(f"Model reference '{model_ref}' does not exist locally")
+    if snapshot_download is None:  # pragma: no cover - optional dependency
+        raise ModelDiscoveryError("huggingface_hub is required to download remote models")
+    payload = hwcheck.fetch_model_snapshot(model_ref=model_ref)
+    return Path(payload["path"])
+
+
+def _detect_backends(path: Path, preferred_backend: str) -> List[str]:
+    has_gguf = any(file.suffix == ".gguf" for file in path.rglob("*.gguf"))
+    candidates: List[str] = []
+    if has_gguf:
+        candidates.append("llamacpp")
+    else:
+        candidates.extend(["hf", "vllm", "sglang"])
+    if preferred_backend != "auto" and preferred_backend not in candidates:
+        candidates.insert(0, preferred_backend)
+    return list(dict.fromkeys(candidates))
+
+
+def _vision_support(config: Dict[str, Any]) -> bool:
+    return bool(
+        config.get("vision_config")
+        or config.get("mm_projector")
+        or config.get("mm_vision_tower")
+        or config.get("vision_tower")
+    )
+
+
+def _dtype_candidates(config: Dict[str, Any]) -> List[str]:
+    base = ["fp16", "bf16", "fp32"]
+    dtype = config.get("torch_dtype")
+    if dtype:
+        base.append(str(dtype))
+    return sorted(dict.fromkeys(base))
+
+
+def _context_window(config: Dict[str, Any], tokenizer_config: Dict[str, Any]) -> int:
+    values: Sequence[int] = []
+    for key in (
+        "rope_scaling.original_max_position_embeddings",
+        "max_position_embeddings",
+        "max_sequence_length",
+        "seq_length",
+    ):
+        current = config
+        for chunk in key.split("."):
+            if isinstance(current, dict) and chunk in current:
+                current = current[chunk]
+            else:
+                current = None
+                break
+        if isinstance(current, int):
+            values.append(int(current))
+    if tokenizer_config.get("model_max_length"):
+        values.append(int(tokenizer_config["model_max_length"]))
+    if not values:
+        return 0
+    return max(values)
+
+
+def _stop_tokens(generation_config: Dict[str, Any]) -> List[int]:
+    tokens: List[int] = []
+    if "stop" in generation_config and isinstance(generation_config["stop"], list):
+        for entry in generation_config["stop"]:
+            if isinstance(entry, int):
+                tokens.append(entry)
+    if "stop_token_ids" in generation_config and isinstance(generation_config["stop_token_ids"], list):
+        tokens.extend(int(token) for token in generation_config["stop_token_ids"])
+    return list(dict.fromkeys(tokens))
+
+
+def _system_prompt_hint(config: Dict[str, Any], generation_config: Dict[str, Any]) -> Optional[str]:
+    for candidate in (generation_config.get("system_prompt"), config.get("system_prompt")):
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate
+    return None
+
+
+class _ChatTemplateAdapter:
+    def __init__(self, template: str, *, eos_token: Optional[str]) -> None:
+        self.template = template
+        self._eos_token = eos_token
+        if jinja2 is not None and "{%" in template:
+            env = jinja2.Environment(autoescape=False)  # type: ignore[call-arg]
+            self._compiled = env.from_string(template)
+        else:
+            self._compiled = None
+
+    def apply(self, messages: Iterable[Dict[str, str]], add_generation_prompt: bool) -> str:
+        if self._compiled is not None:
+            return self._compiled.render(messages=list(messages), add_generation_prompt=add_generation_prompt)
+        rendered: List[str] = []
+        for message in messages:
+            role = message.get("role", "")
+            content = message.get("content", "")
+            if role == "system":
+                rendered.append(f"<<SYS>>{content}<</SYS>>")
+            elif role == "user":
+                rendered.append(f"<|user|>\n{content}\n")
+            elif role == "assistant":
+                rendered.append(f"<|assistant|>\n{content}\n")
+            else:
+                rendered.append(f"<{role}>\n{content}\n")
+        if add_generation_prompt:
+            rendered.append("<|assistant|>")
+        return "".join(rendered)
+
 
 @dataclass(slots=True)
 class InspectionResult:
-    """Structured representation of model discovery output."""
-
     arch: str
     dtype_candidates: List[str]
     context_window: int
@@ -33,7 +167,8 @@ class InspectionResult:
     eos_tokens: List[int]
     system_prompt_hint: Optional[str]
     backends_supported: List[str]
-    source_path: pathlib.Path
+    source_path: Path
+    _template_adapter: _ChatTemplateAdapter = field(repr=False, compare=False)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,83 +195,58 @@ class InspectionResult:
         }
 
     def pretty(self) -> str:
-        payload = self.to_dict()
-        return json.dumps(payload, indent=2, sort_keys=True, default=str)
+        return json.dumps(self.to_dict(), indent=2, sort_keys=True, default=str)
 
     def apply_chat_template(self, messages: Iterable[Dict[str, str]]) -> str:
-        template = self.chat_template
-        if "{%" not in template:
-            # Static template, return as-is with appended assistant tag.
-            return template
-        rendered: List[str] = []
-        for message in messages:
-            role = message["role"]
-            content = message["content"]
-            if role == "system":
-                rendered.append(f"<<SYS>>{content}<</SYS>>")
-            elif role == "user":
-                rendered.append(f"<|user|>\n{content}\n")
-            elif role == "assistant":
-                rendered.append(f"<|assistant|>\n{content}\n")
-        if not rendered or not rendered[-1].endswith("<|assistant|>\n"):
-            rendered.append("<|assistant|>")
-        return "".join(rendered)
-
-
-class ModelDiscoveryError(RuntimeError):
-    """Raised when inspection fails."""
+        return self._template_adapter.apply(list(messages), add_generation_prompt=True)
 
 
 def inspect_model(model_ref: str, preferred_backend: str = "auto") -> InspectionResult:
-    path = resolve_model_path(model_ref)
-    config = load_json(path / "config.json")
-    tokenizer_config = load_optional_json(path / "tokenizer_config.json")
-    generation_config = load_optional_json(path / "generation_config.json")
+    path = _maybe_snapshot(model_ref)
+    config = _load_json(path / "config.json")
+    tokenizer_config = _load_json(path / "tokenizer_config.json", required=False)
+    generation_config = _load_json(path / "generation_config.json", required=False)
 
     arch = str(config.get("model_type", "unknown"))
-    dtype_candidates = sorted({
-        str(config.get("torch_dtype", "auto")),
-        "fp16",
-        "bf16",
-        "fp32",
-    })
-    context_window = int(
-        config.get(
-            "max_position_embeddings",
-            tokenizer_config.get("model_max_length", 0) if tokenizer_config else 0,
-        )
-    )
-    sliding_window = config.get("sliding_window")
     n_layers = int(config.get("num_hidden_layers", 0))
     n_heads = int(config.get("num_attention_heads", 0))
     n_kv_heads = int(config.get("num_key_value_heads", n_heads))
     hidden_size = int(config.get("hidden_size", 0))
-    head_dim = int(hidden_size / n_heads) if n_heads else 0
-    chat_template = (tokenizer_config or {}).get("chat_template", "")
+    head_dim = int(config.get("head_dim", hidden_size // n_heads if n_heads else 0))
+    context_window = _context_window(config, tokenizer_config)
+    sliding_window = config.get("sliding_window") or config.get("sliding_window_size")
     rope_scaling = config.get("rope_scaling")
     tokenizer_info = {
-        "model_max_length": (tokenizer_config or {}).get("model_max_length", context_window),
-        "padding_side": (tokenizer_config or {}).get("padding_side", "right"),
+        "model_max_length": tokenizer_config.get("model_max_length", context_window),
+        "padding_side": tokenizer_config.get("padding_side", "right"),
+        "special_tokens_map": {
+            "eos_token": tokenizer_config.get("eos_token"),
+            "pad_token": tokenizer_config.get("pad_token"),
+            "bos_token": tokenizer_config.get("bos_token"),
+            "additional_special_tokens": tokenizer_config.get("additional_special_tokens", []),
+        },
     }
-    vision_support = "vision_config" in config
-    stop_tokens = list((generation_config or {}).get("stop_token_ids", []))
-    eos_token_id = (generation_config or {}).get("eos_token_id")
-    eos_tokens = stop_tokens.copy()
-    if eos_token_id is not None and eos_token_id not in eos_tokens:
+    stop_tokens = _stop_tokens(generation_config)
+    eos_tokens: List[int] = list(stop_tokens)
+    eos_token_id = generation_config.get("eos_token_id") or config.get("eos_token_id")
+    if isinstance(eos_token_id, int) and eos_token_id not in eos_tokens:
         eos_tokens.append(eos_token_id)
-    system_prompt_hint = (generation_config or {}).get("system_prompt")
-    backends_supported = resolve_backends(path, preferred_backend)
+    system_prompt_hint = _system_prompt_hint(config, generation_config)
+    dtype_candidates = _dtype_candidates(config)
+    backends_supported = _detect_backends(path, preferred_backend)
+    all_files = list(path.rglob("*"))
     metadata = {
-        "files": sorted(p.name for p in path.iterdir()),
-        "config": config,
-        "generation_config": generation_config,
-        "tokenizer_config": tokenizer_config,
+        "files": sorted(str(p.relative_to(path)) for p in all_files),
+        "rope_scaling_note": "gguf_auto" if any(p.suffix == ".gguf" for p in all_files) else None,
     }
+
+    chat_template = tokenizer_config.get("chat_template", "")
+    adapter = _ChatTemplateAdapter(chat_template, eos_token=tokenizer_config.get("eos_token"))
 
     return InspectionResult(
         arch=arch,
         dtype_candidates=dtype_candidates,
-        context_window=context_window,
+        context_window=int(context_window),
         sliding_window=int(sliding_window) if sliding_window is not None else None,
         n_layers=n_layers,
         n_heads=n_heads,
@@ -146,48 +256,13 @@ def inspect_model(model_ref: str, preferred_backend: str = "auto") -> Inspection
         chat_template=chat_template,
         rope_scaling=rope_scaling,
         tokenizer_info=tokenizer_info,
-        vision_support=vision_support,
+        vision_support=_vision_support(config),
         stop_tokens=stop_tokens,
         eos_tokens=eos_tokens,
         system_prompt_hint=system_prompt_hint,
         backends_supported=backends_supported,
         source_path=path,
+        _template_adapter=adapter,
         metadata=metadata,
     )
 
-
-def resolve_model_path(model_ref: str) -> pathlib.Path:
-    path = pathlib.Path(model_ref)
-    if path.is_file() and path.suffix == ".gguf":
-        return path.parent
-    if path.exists():
-        return path
-    if snapshot_download is None:  # pragma: no cover - network download
-        raise ModelDiscoveryError("huggingface_hub is required to download remote models")
-    downloaded = snapshot_download(model_ref)
-    return pathlib.Path(downloaded)
-
-
-def load_json(path: pathlib.Path) -> Dict[str, Any]:
-    if not path.exists():
-        raise ModelDiscoveryError(f"Missing required file: {path}")
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def load_optional_json(path: pathlib.Path) -> Dict[str, Any]:
-    if not path.exists():
-        return {}
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def resolve_backends(path: pathlib.Path, preferred_backend: str) -> List[str]:
-    backends: List[str] = []
-    if any(p.suffix == ".gguf" for p in path.iterdir()):
-        backends.append("llamacpp")
-    else:
-        backends.extend(["hf", "vllm"])
-    if preferred_backend != "auto" and preferred_backend not in backends:
-        backends.insert(0, preferred_backend)
-    return sorted(set(backends), key=backends.index)

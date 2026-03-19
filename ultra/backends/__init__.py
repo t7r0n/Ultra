@@ -1,45 +1,52 @@
-"""Backend registry for ULTRA."""
-
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Protocol
+from dataclasses import dataclass, field
+from typing import Any, Dict, Iterable, List, Optional, Protocol, TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover - type checking only
+    from ..mcd.inspector import InspectionResult
 
 
-class CompletionResult(Protocol):
-    """Protocol for backend generation results."""
+@dataclass(slots=True)
+class SamplingParameters:
+    temperature: float
+    top_p: float
+    top_k: Optional[int] = None
+    max_new_tokens: int = 512
+    repetition_penalty: Optional[float] = None
+    presence_penalty: Optional[float] = None
+    frequency_penalty: Optional[float] = None
+    seed: Optional[int] = None
+    stop: Optional[List[int]] = None
+    extra: Dict[str, Any] = field(default_factory=dict)
 
+
+@dataclass(slots=True)
+class Completion:
     text: str
-    logprobs: Optional[List[float]]
+    tokens: Optional[List[str]] = None
+    logprobs: Optional[List[float]] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 class BackendEngine(Protocol):
-    """Protocol describing minimum backend surface required by Ultra Mode."""
-
     name: str
 
-    def generate(self, prompt: str, **kwargs) -> CompletionResult:
+    def generate(
+        self,
+        *,
+        prompt: str,
+        sampling: SamplingParameters,
+        inspection: "InspectionResult",
+        structured: Optional[Dict[str, Any]] = None,
+    ) -> Completion:
         ...
 
     def supports_structured_decoding(self) -> bool:
         ...
 
 
-@dataclass(slots=True)
-class SamplingParameters:
-    """Backend-agnostic sampling parameters."""
-
-    temperature: float
-    top_p: float
-    max_tokens: int
-    seed: Optional[int] = None
-    presence_penalty: Optional[float] = None
-    frequency_penalty: Optional[float] = None
-
-
 class BackendRegistry:
-    """Simple backend registry to allow dependency injection within tests."""
-
     def __init__(self) -> None:
         self._engines: Dict[str, BackendEngine] = {}
 
@@ -58,10 +65,11 @@ class BackendRegistry:
 
 registry = BackendRegistry()
 
-# Import side effects register default engines.
-from . import hf_engine as _hf_engine  # noqa: F401  (imported for side effects)
+# Import side effects register engines.
+from . import hf_engine as _hf_engine  # noqa: F401
 from . import vllm_engine as _vllm_engine  # noqa: F401
 from . import sglang_engine as _sglang_engine  # noqa: F401
 from . import llama_cpp_engine as _llama_cpp_engine  # noqa: F401
 
-__all__ = ["SamplingParameters", "registry", "BackendEngine", "CompletionResult"]
+__all__ = ["SamplingParameters", "Completion", "BackendEngine", "registry"]
+
