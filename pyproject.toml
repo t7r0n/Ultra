@@ -1,0 +1,34 @@
+[project]
+name = "ultra"
+version = "0.1.0"
+description = "ULTRA: inference & evaluation orchestrator"
+readme = "README.md"
+authors = [
+    { name = "t7r0n" }
+]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "torch",
+    "transformers",
+    "huggingface_hub",
+    "accelerate",
+    "tokenizers",
+    "pynvml",
+    "numba",
+    "uvloop",
+    "orjson",
+    "safetensors",
+]
+
+[project.optional-dependencies]
+vllm = ["vllm"]
+sglang = ["sglang"]
+llamacpp = ["llama-cpp-python"]
+flash = ["flash-attn"]
+
+[project.scripts]
+ultra = "ultra.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"

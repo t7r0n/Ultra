@@ -1,0 +1,198 @@
+{
+  "aggregate": {
+    "mean_accuracy": {
+      "oracle_best_of_k": 0.0,
+      "single_pass": 0.0,
+      "ultra_fanout": 0.0
+    },
+    "mean_category_accuracy": {
+      "logic": {
+        "oracle_best_of_k": 0.0,
+        "single_pass": 0.0,
+        "ultra_fanout": 0.0
+      }
+    },
+    "mean_timing_ratio": {
+      "ultra_vs_single_generation_time": 0.863549234914006
+    }
+  },
+  "conditions": [
+    {
+      "condition": {
+        "code_min_p": null,
+        "code_repetition_penalty": null,
+        "code_temperature": null,
+        "code_top_k": null,
+        "code_top_p": null,
+        "family": "qwen3",
+        "label": "qwen3_1.7b_thinking",
+        "model_id": "Qwen/Qwen3-1.7B",
+        "text_min_p": 0.0,
+        "text_repetition_penalty": 1.0,
+        "text_temperature": 0.6,
+        "text_top_k": 20,
+        "text_top_p": 0.95,
+        "thinking": true
+      },
+      "summary": {
+        "accuracy": {
+          "oracle_best_of_k": 0.0,
+          "single_pass": 0.0,
+          "ultra_fanout": 0.0
+        },
+        "avg_selected_generated_tokens": 208.0,
+        "category_accuracy": {
+          "logic": {
+            "oracle_best_of_k": 0.0,
+            "single_pass": 0.0,
+            "ultra_fanout": 0.0
+          }
+        },
+        "category_generation_time_s": {
+          "logic": {
+            "single_pass": 15.181340489998547,
+            "ultra_fanout": 13.109838569998828
+          }
+        },
+        "selected_answer_stage_reached_rate": 0.0,
+        "selected_fallback_answer_rate": 0.0,
+        "selected_structured_answer_rate": 0.0,
+        "selected_think_block_rate": 1.0,
+        "selected_think_closed_rate": 0.0,
+        "selected_truncated_inside_think_rate": 1.0
+      },
+      "tasks": [
+        {
+          "answer": "Mixed",
+          "category": "logic",
+          "single_pass": {
+            "canonical_answer": null,
+            "cleaned_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+            "generated_tokens": 208,
+            "latency_s": 15.1813,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.06759236752986908,
+              "canonical_source": "none",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "single_pass",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's try to figure out this puzzle. So, there are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. That means the label on each box is incorrect. The challenge is to figure out which box to draw a fruit from to determine all the contents.\n\nFirst, I need to recall that if all the labels are wrong, then each box isn't labeled correctly. For example, if the label on the Apples box says \"Apples,\" then it's actually either Oranges or Mixed. Similarly for the other boxes.\n\nNow, the key here is that we can only draw one fruit from one box. The question is, which box should we draw from to figure out all the contents?\n\nLet me think. If I take a fruit from the Mixed box. Wait, the Mixed box is labeled \"Mixed,\" but since all labels are wrong, the actual contents are either Apples or Oranges. But if I draw a fruit from the Mixed box, it could be",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "task_id": "logic_mixed_box",
+          "ultra_candidates": [
+            {
+              "canonical_answer": null,
+              "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "generated_tokens": 208,
+              "latency_s": 13.1098,
+              "meta": {
+                "answer_budget": 48,
+                "answer_stage_invoked": false,
+                "answer_stage_reached": false,
+                "answer_text": "",
+                "avg_logprob": -0.049189597368240356,
+                "candidate_index": 0,
+                "canonical_source": "none",
+                "generation_stage_count": 1,
+                "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+                "reasoning_budget": 208,
+                "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+                "stage_one_generated_tokens": 208,
+                "stage_two_generated_tokens": 0,
+                "strategy": "ultra_fanout",
+                "style": "default",
+                "think_closed": false,
+                "truncated_inside_think": true
+              },
+              "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "score": 0.0,
+              "think_block_present": true
+            }
+          ],
+          "ultra_oracle_best": {
+            "canonical_answer": null,
+            "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "generated_tokens": 208,
+            "latency_s": 13.1098,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.049189597368240356,
+              "candidate_index": 0,
+              "canonical_source": "none",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "score": 0.0,
+            "think_block_present": true
+          },
+          "ultra_selected": {
+            "canonical_answer": null,
+            "cleaned_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "generated_tokens": 208,
+            "latency_s": 13.1098,
+            "meta": {
+              "answer_budget": 48,
+              "answer_stage_invoked": false,
+              "answer_stage_reached": false,
+              "answer_text": "",
+              "avg_logprob": -0.049189597368240356,
+              "candidate_index": 0,
+              "canonical_source": "none",
+              "generation_stage_count": 1,
+              "normalized_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "reasoning_budget": 208,
+              "reasoning_text": "Okay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+              "stage_one_generated_tokens": 208,
+              "stage_two_generated_tokens": 0,
+              "strategy": "ultra_fanout",
+              "style": "default",
+              "think_closed": false,
+              "truncated_inside_think": true
+            },
+            "raw_text": "<think>\nOkay, let's see. There are three boxes: Apples, Oranges, and Mixed. All the labels are wrong. So the label on each box is incorrect. The question is, which box should I draw one fruit from to figure out all the contents?\n\nHmm. So the key here is that all labels are wrong. That means:\n\n- The box labeled \"Apples\" is not actually apples.\n- The box labeled \"Oranges\" is not actually oranges.\n- The box labeled \"Mixed\" is not actually mixed.\n\nWait, but what's the actual content of each box? Since all labels are wrong, each box must contain a different fruit type. But how do we figure out which one is which?\n\nThe classic puzzle here is similar to the one where you have three boxes with incorrect labels, and you need to figure out which one is which by drawing one fruit. The trick is that you can draw from one box, and based on that, you can deduce the rest.\n\nLet me think.",
+            "score": 0.0,
+            "think_block_present": true
+          }
+        }
+      ],
+      "timings": {
+        "model_load_s": 2.49,
+        "tokenizer_load_s": 1.4238
+      }
+    }
+  ],
+  "device": "cuda",
+  "dtype": "fp16",
+  "generated_at": "2026-03-12T21:16:56Z",
+  "n_candidates": 1,
+  "single_token_multiplier": 1.0,
+  "tasks_run": [
+    "logic_mixed_box"
+  ],
+  "thinking_token_multiplier": 1.0
+}
